@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>异步</title>
+  <style>
+    #app {
+      margin: 100px auto;
+      width: 100px;
+      height: 100px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    /** 
+      知识点：事件循环机制EVENT LOOP: 宏观任务、微观任务
+      promise和async是javascript引擎内部的微观任务，setTimeout是(浏览器API)宏观任务
+      执行解析： 调用foo2()，产生3个宏观任务setTimeout，而每个宏观任务里面都有个改变背景色的微观任务
+    */
+    function sleep(duration) {
+      return new Promise(function(resolve, reject) {
+        setTimeout(resolve, duration)
+      })
+    }
+
+    async function foo(duration, color) {
+      await sleep(duration);
+      document.getElementById('app').style.backgroundColor = color;
+    }
+
+    async function foo2() {
+
+      await foo(3000, 'yellow')
+      await foo(2000, 'blue')
+      await foo(1000, 'red')
+
+    }
+    foo2()
+
+  </script>
+</body>
+</html>
